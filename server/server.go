@@ -15,9 +15,6 @@ import (
 	grpc "google.golang.org/grpc"
 )
 
-// const (
-// 	port string = ":50052"
-// )
 var port string = ":50051"
 
 // server is used to implement helloworld.GreeterServer.
@@ -79,13 +76,13 @@ func main() {
 		log.Fatalf("etcdAdd failed.")
 	}
 
-	lis, err := net.Listen("tcp", "localhost:"+port)
+	listen, err := net.Listen("tcp", "localhost:"+port)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	s := grpc.NewServer()
 	pb.RegisterGreeterServer(s, &server{})
-	if err := s.Serve(lis); err != nil {
+	if err := s.Serve(listen); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
 }
